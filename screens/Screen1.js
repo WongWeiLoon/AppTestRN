@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,21 +11,35 @@ import {
 
 const localData = require('../data.json');
 const IMG_URI = require('../assets/images/dummyImg.jpeg'); 
-
+ 
 export const Screen1 = ({navigation}) => { 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [userData, setUserData] = useState(localData);
+
   onPressItem = item => {
     //console.log(item);
-    navigation.navigate('Screen2', item)
-  };
+    navigation.navigate('Screen2', item);
+  }; 
+
+
+  onPullRefresh = () => { 
+    setIsRefreshing(true);
+    var data = require('../data.json');
+    setUserData(data);
+    setIsRefreshing(false);
+    
+};
 
   return (
     <SafeAreaView>
       <FlatList
         style={styles.listContainer}
-        data={localData}
+        data={userData}
         renderItem={renderListItem}
         keyExtractor={item => item.id}
         ItemSeparatorComponent={this.RenderSeparator}
+        onRefresh={onPullRefresh}
+        refreshing={isRefreshing}
       />
     </SafeAreaView>
   );

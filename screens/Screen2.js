@@ -26,9 +26,11 @@ export const Screen2 = ({route, navigation}) => {
 
   SaveInformation = () => {
     if (fName.trim().length === 0 || lName.trim().length === 0)
-      alert("First Name or Last Name cannot be empty. Please fill in required field.")
+      alert(
+        'First Name or Last Name cannot be empty. Please fill in required field.',
+      );
     else {
-        alert("Save it")
+      alert('Save it');
     }
   };
 
