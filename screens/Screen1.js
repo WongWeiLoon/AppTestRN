@@ -10,9 +10,14 @@ import {
 } from 'react-native';
 
 const localData = require('../data.json');
-const IMG_URI = require('../assets/images/dummyImg.jpeg');
+const IMG_URI = require('../assets/images/dummyImg.jpeg'); 
 
-export const Screen1 = () => {
+export const Screen1 = ({navigation}) => { 
+  let onPressItem = item => {
+    //console.log(item);
+    navigation.navigate('Screen2', item)
+  };
+
   return (
     <SafeAreaView>
       <FlatList
@@ -39,12 +44,7 @@ const renderListItem = ({item}) => (
   </TouchableHighlight>
 );
 
-onPressItem = item => {
-  console.log(item);
-  //navigation.navigate('Screen2', item)
-};
-
-let RenderSeparator = () => {
+RenderSeparator = () => {
   return (
     <View
       style={{
