@@ -13,7 +13,7 @@ const localData = require('../data.json');
 const IMG_URI = require('../assets/images/dummyImg.jpeg'); 
 
 export const Screen1 = ({navigation}) => { 
-  let onPressItem = item => {
+  onPressItem = item => {
     //console.log(item);
     navigation.navigate('Screen2', item)
   };

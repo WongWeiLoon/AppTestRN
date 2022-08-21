@@ -41,7 +41,13 @@ const App = () => {
           })}
         />
 
-        <Stack.Screen name="Screen2" component={Screen2} />
+        <Stack.Screen
+          name="Screen2"
+          component={Screen2}
+          options={() => ({
+            headerShown: false,
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
