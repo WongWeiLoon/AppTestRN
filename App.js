@@ -1,26 +1,15 @@
 import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text, 
-  View,
-} from 'react-native'; 
- 
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
-const App = () => { 
+import { Screen1 } from './screens/Screen1';
+import {Screen2} from './screens/Screen2';
+
+const App = () => {
   return (
-    <SafeAreaView  > 
-       <View >
-           <Text>App Test for React Native</Text>
-        </View>
-    </SafeAreaView>
+    <Screen1 />
   );
 };
 
-const styles = StyleSheet.create({ 
-});
+const styles = StyleSheet.create({});
 
 export default App;
