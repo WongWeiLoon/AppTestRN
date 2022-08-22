@@ -5,30 +5,53 @@ import {
   Text,
   View,
   FlatList,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
 } from 'react-native';
 
 const localData = require('../data.json');
-const IMG_URI = require('../assets/images/dummyImg.jpeg'); 
- 
-export const Screen1 = ({navigation}) => { 
+const IMG_URI = require('../assets/images/dummyImg.jpeg');
+
+export const Screen1 = ({navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [userData, setUserData] = useState(localData);
 
-  onPressItem = item => {
+  const onPressItem = item => {
     //console.log(item);
     navigation.navigate('Screen2', item);
-  }; 
+  };
 
-
-  onPullRefresh = () => { 
+  const onPullRefresh = () => {
     setIsRefreshing(true);
     var data = require('../data.json');
     setUserData(data);
     setIsRefreshing(false);
-    
-};
+  };
+
+  const renderListItem = ({item}) => {
+    return (
+      <TouchableOpacity onPress={onPressItem.bind(this, item)}>
+        <View style={styles.inlineListBox}>
+          <Image style={styles.image} source={IMG_URI} />
+          <Text style={styles.paragraph}>
+            {item.firstName} {item.lastName}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          backgroundColor: '#CED0CE',
+          marginVertical: 10,
+        }}
+      />
+    );
+  };
 
   return (
     <SafeAreaView>
@@ -37,37 +60,11 @@ export const Screen1 = ({navigation}) => {
         data={userData}
         renderItem={renderListItem}
         keyExtractor={item => item.id}
-        ItemSeparatorComponent={this.RenderSeparator}
+        ItemSeparatorComponent={renderSeparator}
         onRefresh={onPullRefresh}
         refreshing={isRefreshing}
       />
     </SafeAreaView>
-  );
-};
-
-const renderListItem = ({item}) => (
-  <TouchableHighlight
-    onPress={this.onPressItem.bind(this, item)}
-    underlayColor="white">
-    <View style={styles.inlineListBox}>
-      <Image style={styles.image} source={IMG_URI} />
-      <Text style={styles.paragraph}>
-        {item.firstName} {item.lastName}
-      </Text>
-    </View>
-  </TouchableHighlight>
-);
-
-RenderSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 1,
-        width: '100%',
-        backgroundColor: '#CED0CE',
-        marginVertical: 10,
-      }}
-    />
   );
 };
 
@@ -89,6 +86,7 @@ const styles = StyleSheet.create({
     margin: 12,
     fontSize: 16,
     alignSelf: 'center',
+    color: 'black',
     //fontWeight: 'bold',
   },
 });

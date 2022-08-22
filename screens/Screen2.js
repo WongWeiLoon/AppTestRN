@@ -33,7 +33,6 @@ export const Screen2 = ({route, navigation}) => {
       alert('Save it');
     }
   };
-
   return (
     <View style={styles.container}>
       <HeaderBar
@@ -162,6 +161,7 @@ const styles = StyleSheet.create({
   txtinput: {
     flex: 2.5,
     fontSize: 16,
+    color: 'black',
     borderRadius: 6,
     borderWidth: 0.8,
     borderColor: '#C1C0C1',
