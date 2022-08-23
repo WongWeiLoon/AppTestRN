@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {HeaderBar} from '../components/HeaderBar';
 import {HeaderSection} from '../components/HeaderSection.js';
@@ -14,7 +15,7 @@ import {HeaderSection} from '../components/HeaderSection.js';
 const IMG_URI = require('../assets/images/dummyImg.jpeg');
 
 export const Screen2 = ({route, navigation}) => {
-  const {firstName, lastName, email, phone} = route.params;
+  const {id, firstName, lastName, email, phone} = route.params;
   const lastNameRef = useRef();
   const emailRef = useRef();
   const phoneRef = useRef();
@@ -24,13 +25,32 @@ export const Screen2 = ({route, navigation}) => {
   const [emailVal, setEmail] = useState(email);
   const [phoneVal, setPhone] = useState(phone);
 
-  SaveInformation = () => {
+  const SaveInformation = async () => {
     if (fName.trim().length === 0 || lName.trim().length === 0)
       alert(
         'First Name or Last Name cannot be empty. Please fill in required field.',
       );
     else {
-      alert('Save it');
+      let appendUserObj = {
+        id,
+        firstName: fName,
+        lastName: lName,
+        email: emailVal,
+        phone: phoneVal,
+      };
+      let userData = await AsyncStorage.getItem('user');
+      let parsedUserData = JSON.parse(userData);
+
+      const objIndex = parsedUserData.findIndex(x => x.id === appendUserObj.id);
+      parsedUserData.splice(objIndex, 1, appendUserObj);
+
+      userData = JSON.stringify(parsedUserData);
+      await AsyncStorage.setItem('user', userData);
+      navigation.goBack();
+
+      /*parsedUserData.forEach((user, i) => {
+        console.log("Name is " + user.lastName);
+      })*/
     }
   };
   return (

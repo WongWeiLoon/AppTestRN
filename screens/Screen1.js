@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,13 +8,56 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const localData = require('../data.json');
+//const localData = require('../data.json');
 const IMG_URI = require('../assets/images/dummyImg.jpeg');
 
 export const Screen1 = ({navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [userData, setUserData] = useState(localData);
+  const [userData, setUserData] = useState();
+
+  if (userData === null || userData === undefined) {
+    try {
+      AsyncStorage.getItem('user').then(res => {
+        if (res !== null) {
+          setUserData(JSON.parse(res));
+        } else {
+          var localData = require('../data.json');
+          setUserData(localData);
+          var stringifyData = JSON.stringify(localData);
+          AsyncStorage.setItem('user', stringifyData);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      AsyncStorage.getItem('user').then(res => {
+        if (res !== null) {
+          setUserData(JSON.parse(res));
+        }
+      });
+    });
+  }, []);
+
+  /*useEffect(() => {
+    asyncStorageUserData();
+    if (data !== null) {
+      console.log('Async Storage not empty');
+      console.log(data);
+    } else {
+      console.log('Async Storage is Empty. Get it from local json.');
+      data = require('../data.json');
+      var stringifyData = JSON.stringify(data);
+      AsyncStorage.setItem('user', stringifyData);
+      console.log(data);
+    }
+    setUserData(data);
+  }, []);*/
 
   const onPressItem = item => {
     //console.log(item);
@@ -23,8 +66,8 @@ export const Screen1 = ({navigation}) => {
 
   const onPullRefresh = () => {
     setIsRefreshing(true);
-    var data = require('../data.json');
-    setUserData(data);
+    var refreshData = require('../data.json');
+    setUserData(refreshData);
     setIsRefreshing(false);
   };
 

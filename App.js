@@ -21,7 +21,7 @@ const App = () => {
             title: 'Contacts',
             headerLeft: () => (
               <IconButton
-                onPress={() => alert('Search contacts')}
+                onPress={() => alert('Search for contacts')}
                 icon="magnify"
                 size={27}
                 color="#ff8c00"
